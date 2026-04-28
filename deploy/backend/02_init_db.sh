@@ -15,15 +15,24 @@ warn()    { echo -e "${Y}[ WARN ]${NC} $*"; }
 error()   { echo -e "${R}[ ERROR]${NC} $*"; exit 1; }
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
-BACKEND_DIR="$PROJECT_DIR/backend"
+PROJECT_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")" 
+BACKEND_DIR="${BACKEND_DIR_OVERRIDE:-$PROJECT_DIR/backend}"
 RESET=false
 
 while [[ $# -gt 0 ]]; do
-    case "$1" in --reset) RESET=true; shift ;; *) shift ;; esac
+    case "$1" in
+        --reset) RESET=true; shift ;;
+        --backend-dir=*) BACKEND_DIR="${1#*=}"; shift ;;
+        *) shift ;;
+    esac
 done
 
-[ -f "$BACKEND_DIR/.env" ] || error ".env no encontrado. Ejecuta primero: bash deploy/configure_env.sh"
+log "Directorio calculado del backend: $BACKEND_DIR"
+log "Buscando .env en: $BACKEND_DIR/.env"
+
+if [ ! -f "$BACKEND_DIR/.env" ]; then
+    error ".env NO encontrado en: $BACKEND_DIR\n  Soluciones:\n    1) Ejecuta primero: bash deploy/configure_env.sh\n    2) O pasa la ruta manualmente: bash 02_init_db.sh --backend-dir=/ruta/a/tu/backend"
+fi
 [ -f "$BACKEND_DIR/venv/bin/activate" ] || error "venv no encontrado. Ejecuta: bash backend/01_install_deps.sh"
 
 source "$BACKEND_DIR/venv/bin/activate"

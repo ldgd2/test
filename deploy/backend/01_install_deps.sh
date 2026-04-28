@@ -32,12 +32,12 @@ apt-get install -y curl git build-essential libssl-dev libffi-dev \
     software-properties-common ca-certificates gnupg lsb-release
 success "Sistema actualizado"
 
-# ── 2. Python 3.11 ────────────────────────────────────────────────────
-log "Instalando Python 3.12.3..."
+# ── 2. Python 3.12 ────────────────────────────────────────────────────
+log "Instalando Python 3.12..."
 add-apt-repository -y ppa:deadsnakes/ppa 2>/dev/null || true
 apt-get update -y
-apt-get install -y python3.12.3 python3.12.3-venv python3.12.3-dev python3-pip
-success "Python $(python3.12.3 --version) instalado"
+apt-get install -y python3.12 python3.12-venv python3.12-dev python3-pip
+success "Python $(python3.12 --version) instalado"
 
 # ── 3. PostgreSQL (cliente + servidor) ───────────────────────────────
 if [ "$SKIP_PG" = false ]; then
@@ -67,7 +67,7 @@ fi
 log "Creando entorno virtual en $BACKEND_DIR/venv..."
 cd "$BACKEND_DIR"
 if [ ! -d "venv" ]; then
-    python3.11 -m venv venv
+    python3.12 -m venv venv
     success "Entorno virtual creado"
 else
     warn "Entorno virtual ya existe, actualizando..."
