@@ -6,3 +6,4 @@ dist/
 .editorconfig
 *.log
 package-lock.json
+.env
