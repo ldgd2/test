@@ -1,0 +1,103 @@
+<div class="page">
+
+  <!-- PASO 1: Elegir tipo -->
+  <div class="card" *ngIf="paso === 1">
+    <div class="header">
+      <a routerLink="/" class="back-link">← Volver al inicio</a>
+      <div class="header-badge">Nuevo registro</div>
+      <h1 class="header-title">¿Cómo usarás<br><span>la plataforma?</span></h1>
+      <p class="header-sub">Selecciona el tipo de cuenta que deseas crear</p>
+    </div>
+
+    <div class="tipo-grid">
+      <button
+        *ngFor="let tipo of tiposUsuario"
+        class="tipo-card"
+        (click)="seleccionarTipo(tipo.valor)"
+      >
+        <div class="tipo-icon">{{ tipo.icono }}</div>
+        <div class="tipo-info">
+          <div class="tipo-titulo">{{ tipo.titulo }}</div>
+          <div class="tipo-desc">{{ tipo.descripcion }}</div>
+        </div>
+        <div class="tipo-arrow">→</div>
+      </button>
+    </div>
+
+    <p class="footer-link">
+      ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+    </p>
+  </div>
+
+  <!-- PASO 2: Formulario -->
+  <div class="card" *ngIf="paso === 2">
+    <div class="header">
+      <button class="back-link" (click)="volver()">← Cambiar tipo</button>
+      <div class="header-badge">
+        {{ tipoSeleccionado()?.icono }} {{ tipoSeleccionado()?.titulo }}
+      </div>
+      <h1 class="header-title">Crea tu<br><span>cuenta</span></h1>
+      <p class="header-sub">Completa tus datos personales</p>
+    </div>
+
+    <div class="alert-error" *ngIf="error">⚠ {{ error }}</div>
+
+    <form (ngSubmit)="registrar()" class="form">
+
+      <div class="field-row">
+        <div class="field">
+          <label class="label">Nombres *</label>
+          <input class="input" type="text" [(ngModel)]="form.nombres"
+            name="nombres" placeholder="Juan" required/>
+        </div>
+        <div class="field">
+          <label class="label">Apellidos *</label>
+          <input class="input" type="text" [(ngModel)]="form.apellidos"
+            name="apellidos" placeholder="Pérez" required/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Correo electrónico *</label>
+        <input class="input" type="email" [(ngModel)]="form.email"
+          name="email" placeholder="juan@ejemplo.com" required/>
+      </div>
+
+      <div class="field">
+        <label class="label">Teléfono <span class="optional">(opcional)</span></label>
+        <input class="input" type="tel" [(ngModel)]="form.telefono"
+          name="telefono" placeholder="70000000"/>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="label">Contraseña *</label>
+          <input class="input" type="password" [(ngModel)]="form.password"
+            name="password" placeholder="••••••••" required/>
+        </div>
+        <div class="field">
+          <label class="label">Confirmar contraseña *</label>
+          <input class="input" type="password" [(ngModel)]="form.confirmar"
+            name="confirmar" placeholder="••••••••" required/>
+        </div>
+      </div>
+
+      <div class="tipo-badge">
+        <span>Tipo de cuenta:</span>
+        <strong>{{ tipoSeleccionado()?.icono }} {{ tipoSeleccionado()?.titulo }}</strong>
+        <button type="button" class="change-link" (click)="volver()">Cambiar</button>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="loading">
+        <span class="spinner" *ngIf="loading"></span>
+        {{ loading ? 'Creando cuenta...' : 'Crear cuenta' }}
+      </button>
+
+    </form>
+
+    <p class="footer-link">
+      ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+    </p>
+  </div>
+
+</div>

@@ -1,0 +1,227 @@
+<div class="taller-wrapper">
+
+  <!-- ── HEADER ─────────────────────────────────────────────────────────── -->
+  <div class="taller-header">
+    <div class="header-icon">🛠️</div>
+    <h2>{{ tieneTaller ? 'Mi Taller' : 'Registro de Taller' }}</h2>
+    <p>{{ tieneTaller
+          ? 'Aquí puedes ver y editar la información de tu taller.'
+          : 'Completa tu información para que los clientes puedan encontrarte.' }}
+    </p>
+  </div>
+
+  <!-- ── LOADING ─────────────────────────────────────────────────────────── -->
+  <div *ngIf="isLoading && !tieneTaller" class="loading-state">
+    ⏳ Cargando información del taller...
+  </div>
+
+  <!-- ── ALERTAS ─────────────────────────────────────────────────────────── -->
+  <div class="alert alert-success" *ngIf="successMsg">
+    <span>✅</span> {{ successMsg }}
+  </div>
+  <div class="alert alert-error" *ngIf="errorMsg">
+    <span>❌</span> {{ errorMsg }}
+  </div>
+
+  <!-- ── BADGE VERIFICACIÓN + BOTÓN EDITAR ──────────────────────────────── -->
+  <div *ngIf="tieneTaller" class="badge-row">
+    <span *ngIf="tallerExistente.verificado"  class="badge-verificado">✅ Taller verificado</span>
+    <span *ngIf="!tallerExistente.verificado" class="badge-pendiente">⏳ Pendiente de verificación</span>
+
+    <button *ngIf="!modoEdicion"
+            class="btn-editar"
+            type="button"
+            (click)="activarEdicion()">
+      ✏️ Editar Taller
+    </button>
+  </div>
+
+  <!-- ── FORMULARIO ──────────────────────────────────────────────────────── -->
+  <form [formGroup]="tallerForm" (ngSubmit)="onSubmit()" class="taller-form" novalidate>
+
+    <!-- LOGO -->
+    <div class="logo-section">
+      <div class="logo-preview"
+           [style.backgroundImage]="logoPreview ? 'url(' + logoPreview + ')' : 'none'">
+        <span *ngIf="!logoPreview">🏪</span>
+      </div>
+      <div class="logo-info">
+        <p class="logo-label">Logo del Taller</p>
+        <label *ngIf="modoEdicion || !tieneTaller" class="btn-logo" for="logo-input">
+          📁 Seleccionar imagen
+        </label>
+        <input id="logo-input" type="file" accept="image/*"
+               (change)="onLogoSelected($event)" hidden>
+        <p class="logo-hint">PNG o JPG • Máx 2MB</p>
+      </div>
+    </div>
+
+    <!-- ── DATOS BÁSICOS ─────────────────────────────────────────────────── -->
+    <div class="form-section">
+      <h3 class="section-title">📋 Datos Básicos</h3>
+
+      <div class="form-row">
+        <div class="form-group" [class.has-error]="isInvalid('nombre')">
+          <label>
+            Nombre del Taller
+            <span class="required" *ngIf="!tieneTaller || modoEdicion">*</span>
+          </label>
+          <input type="text"
+                 formControlName="nombre"
+                 class="form-input"
+                 [class.input-readonly]="tieneTaller && !modoEdicion"
+                 placeholder="Ej: Taller Central Automotriz">
+          <span class="error-msg" *ngIf="isInvalid('nombre')">
+            El nombre es obligatorio (mín. 3 caracteres)
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text"
+                 formControlName="telefono"
+                 class="form-input"
+                 [class.input-readonly]="tieneTaller && !modoEdicion"
+                 placeholder="Ej: 70000000">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" [class.has-error]="isInvalid('email')">
+          <label>
+            Correo Electrónico
+            <span class="required" *ngIf="!tieneTaller">*</span>
+          </label>
+          <input type="email"
+                 formControlName="email"
+                 class="form-input input-readonly"
+                 placeholder="taller@ejemplo.com">
+          <span class="error-msg" *ngIf="isInvalid('email')">Ingresa un correo válido</span>
+        </div>
+
+        <div class="form-group"
+             [class.has-error]="isInvalid('password')"
+             *ngIf="!tieneTaller || modoEdicion">
+          <label>{{ tieneTaller ? 'Nueva contraseña (opcional)' : 'Contraseña *' }}</label>
+          <input type="password"
+                 formControlName="password"
+                 class="form-input"
+                 [placeholder]="tieneTaller ? 'Dejar vacío para no cambiar' : 'Mínimo 8 caracteres'">
+          <span class="error-msg" *ngIf="isInvalid('password')">Mínimo 8 caracteres</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Descripción de Servicios</label>
+        <textarea formControlName="descripcion"
+                  class="form-input"
+                  [class.input-readonly]="tieneTaller && !modoEdicion"
+                  rows="3"
+                  placeholder="Ej: Especialistas en frenos, suspensión y mantenimiento general...">
+        </textarea>
+      </div>
+    </div>
+
+    <!-- ── UBICACIÓN + MAPA ──────────────────────────────────────────────── -->
+    <div class="form-section">
+      <h3 class="section-title">📍 Ubicación del Taller</h3>
+      <p class="section-hint">
+        {{ (modoEdicion || !tieneTaller)
+            ? 'Haz clic en el mapa, arrastra el marcador, o usa tu ubicación actual.'
+            : 'Ubicación registrada de tu taller.' }}
+      </p>
+
+      <!-- Botón de geolocalización (solo en modo edición/creación) -->
+      <button *ngIf="modoEdicion || !tieneTaller"
+              type="button"
+              class="geo-btn"
+              [class.locating]="geoLocating"
+              [disabled]="geoLocating"
+              (click)="usarUbicacionActual()">
+        <span class="geo-icon">📡</span>
+        {{ geoLocating ? 'Obteniendo ubicación...' : 'Usar mi ubicación actual' }}
+      </button>
+
+      <!-- Mapa Leaflet -->
+      <div id="map-taller"></div>
+
+      <!-- Coordenadas actuales -->
+      <div class="coords-row">
+        <div class="coord-badge">
+          <span class="coord-label">Latitud</span>
+          <span class="coord-value">{{ f['latitud'].value | number:'1.4-6' }}</span>
+        </div>
+        <div class="coord-badge">
+          <span class="coord-label">Longitud</span>
+          <span class="coord-value">{{ f['longitud'].value | number:'1.4-6' }}</span>
+        </div>
+        <div class="coord-hint">✅ Coordenadas guardadas</div>
+      </div>
+
+      <div class="form-group mt-3">
+        <label>Dirección (referencia)</label>
+        <input type="text"
+               formControlName="direccion"
+               class="form-input"
+               [class.input-readonly]="tieneTaller && !modoEdicion"
+               placeholder="Ej: Av. Cristo Redentor, 3er Anillo">
+      </div>
+    </div>
+
+    <!-- ── RADIO DE SERVICIO ──────────────────────────────────────────────── -->
+    <div class="form-section">
+      <h3 class="section-title">🗺️ Radio de Servicio</h3>
+      <p class="section-hint">¿Hasta qué distancia puedes atender solicitudes a domicilio?</p>
+
+      <div class="radio-control">
+        <input type="range"
+               class="radio-slider"
+               min="1" max="100"
+               formControlName="radio_servicio_km"
+               [attr.disabled]="(tieneTaller && !modoEdicion) ? '' : null">
+        <div class="radio-badge">
+          {{ getRadioValue() }}
+          <span>KM</span>
+        </div>
+      </div>
+      <div class="radio-labels">
+        <span>1 km</span>
+        <span>50 km</span>
+        <span>100 km</span>
+      </div>
+    </div>
+
+    <!-- ── BOTONES ────────────────────────────────────────────────────────── -->
+    <div class="botones-footer">
+
+      <!-- Registrar (técnico sin taller) -->
+      <button *ngIf="!tieneTaller"
+              type="submit"
+              class="btn-submit"
+              [class.loading]="isLoading"
+              [disabled]="tallerForm.invalid || isLoading">
+        <span *ngIf="!isLoading">🚀 REGISTRAR MI TALLER</span>
+        <span *ngIf="isLoading" class="spinner-text">⏳ Registrando...</span>
+      </button>
+
+      <!-- Guardar cambios (modo edición) -->
+      <ng-container *ngIf="tieneTaller && modoEdicion">
+        <button type="submit"
+                class="btn-submit"
+                [class.loading]="isLoading"
+                [disabled]="isLoading">
+          <span *ngIf="!isLoading">💾 GUARDAR CAMBIOS</span>
+          <span *ngIf="isLoading" class="spinner-text">⏳ Guardando...</span>
+        </button>
+        <button type="button"
+                class="btn-cancelar"
+                [disabled]="isLoading"
+                (click)="cancelarEdicion()">
+          Cancelar
+        </button>
+      </ng-container>
+
+    </div>
+
+  </form>
+</div>

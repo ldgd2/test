@@ -1,0 +1,24 @@
+<div class="login-container">
+  <div class="login-card">
+
+    <h2>Bienvenida</h2>
+    <p class="subtitle">Ingresa a tu cuenta</p>
+
+    <input 
+      type="email"
+      placeholder="Correo electrónico"
+      [(ngModel)]="email"
+    />
+
+    <input 
+      type="password"
+      placeholder="Contraseña"
+      [(ngModel)]="password"
+    />
+
+    <button (click)="login()">Ingresar</button>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="casos-container">
+  <div class="header">
+    <h2>Casos Disponibles</h2>
+    <button class="btn-historial" (click)="irAHistorial()">
+      📋 Mi Historial
+    </button>
+  </div>
+
+  <div *ngIf="cargando" class="loading">Cargando casos...</div>
+
+  <div *ngIf="!cargando && casos.length === 0" class="empty-state">
+    <p>No hay casos disponibles en este momento.</p>
+    <button (click)="cargarCasos()">🔄 Actualizar</button>
+  </div>
+
+  <div class="casos-grid">
+    <div *ngFor="let caso of casos" class="caso-card">
+      <div class="caso-header">
+        <span class="badge-propuesta">PROPUESTA</span>
+        <span class="fecha">{{ caso.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+
+      <div class="caso-body">
+        <p><strong>📍 Distancia:</strong> {{ caso.distancia_km ?? 'N/A' }} km</p>
+        <p><strong>⏱ Tiempo estimado:</strong> {{ caso.tiempo_estimado_min ?? 'N/A' }} min</p>
+        <p><strong>💰 Precio:</strong> {{ caso.precio_cotizado ? ('$' + caso.precio_cotizado) : 'Por definir' }}</p>
+        <p *ngIf="caso.nota_taller"><strong>📝 Nota:</strong> {{ caso.nota_taller }}</p>
+      </div>
+
+      <div class="caso-footer">
+        <button
+          class="btn-aceptar"
+          (click)="aceptarCaso(caso.id)"
+          [disabled]="aceptando === caso.id"
+        >
+          {{ aceptando === caso.id ? 'Aceptando...' : '✅ Aceptar Caso' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

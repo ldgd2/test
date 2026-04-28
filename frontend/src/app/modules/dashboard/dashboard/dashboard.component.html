@@ -1,0 +1,184 @@
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">🔧</span>
+      <span class="logo-text">Auto<strong>Works</strong></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button
+        *ngFor="let item of menuItems"
+        class="nav-item"
+        [class.active]="seccionActiva === item.id"
+        (click)="setSeccion(item.id)"
+      >
+        <span class="nav-icon">{{ item.icono }}</span>
+        <span class="nav-label">{{ item.label }}</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="perfil-mini">
+        <div class="avatar-sm">{{ iniciales }}</div>
+        <div class="perfil-info">
+          <div class="perfil-nombre">{{ usuario?.nombres }}</div>
+          <div class="perfil-rol">{{ rolLabel }}</div>
+        </div>
+      </div>
+      <button class="logout-btn" (click)="logout()">
+        <span>Cerrar sesión</span>
+        <span>→</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="welcome">Bienvenido, <span>{{ usuario?.nombres }}!</span></h1>
+        <p class="welcome-sub">{{ rolLabel }} · {{ seccionActiva | titlecase }}</p>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-badge">
+          <span class="badge-dot"></span>
+          En línea
+        </div>
+        <div class="avatar-lg">{{ iniciales }}</div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- INICIO -->
+      <ng-container *ngIf="seccionActiva === 'inicio'">
+        <div class="grid-main">
+          <div class="card agenda-card">
+            <div class="card-header">
+              <span class="card-icon">📅</span>
+              <span class="card-title">Agenda de hoy</span>
+              <span class="card-badge">{{ agenda.length }}</span>
+            </div>
+            <div class="agenda-list">
+              <div class="agenda-item" *ngFor="let cita of agenda">
+                <div class="agenda-time">
+                  <span class="time-start">{{ cita.hora }}</span>
+                  <span class="time-end">{{ cita.fin }}</span>
+                </div>
+                <div class="agenda-info">
+                  <div class="agenda-titulo">{{ cita.titulo }}</div>
+                  <div class="agenda-auto">{{ cita.auto }}</div>
+                </div>
+                <div class="agenda-dot"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-col">
+            <div class="card stat-card">
+              <div class="card-header">
+                <span class="card-icon">⚡</span>
+                <span class="card-title">Estado rápido</span>
+              </div>
+              <div class="stat-bar-wrap">
+                <div class="stat-bar-label"><span>Vehículos en progreso</span><strong>24</strong></div>
+                <div class="stat-bar"><div class="stat-bar-fill" style="width:70%"></div></div>
+              </div>
+              <div class="stat-bar-wrap">
+                <div class="stat-bar-label"><span>Presupuestos pendientes</span><strong>0</strong></div>
+                <div class="stat-bar"><div class="stat-bar-fill green" style="width:0%"></div></div>
+              </div>
+              <div class="stat-nums">
+                <div class="stat-num-item"><div class="stat-num">24</div><div class="stat-num-label">En progreso</div></div>
+                <div class="stat-num-item"><div class="stat-num">0</div><div class="stat-num-label">Pendientes</div></div>
+                <div class="stat-num-item"><div class="stat-num">8</div><div class="stat-num-label">Completados</div></div>
+              </div>
+            </div>
+            <div class="card stat-card">
+              <div class="card-header">
+                <span class="card-icon">📊</span>
+                <span class="card-title">Resumen general</span>
+              </div>
+              <div class="stat-bar-wrap">
+                <div class="stat-bar-label"><span>Vehículos en progreso</span><strong>116</strong></div>
+                <div class="stat-bar"><div class="stat-bar-fill orange" style="width:85%"></div></div>
+              </div>
+              <div class="stat-bar-wrap">
+                <div class="stat-bar-label"><span>Presupuestos pendientes</span><strong>123</strong></div>
+                <div class="stat-bar"><div class="stat-bar-fill red" style="width:90%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card visual-card">
+            <div class="visual-content">
+              <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+                <rect width="320" height="200" fill="#1a1a2e"/>
+                <defs><pattern id="vg" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#ffffff08" stroke-width="0.5"/></pattern></defs>
+                <rect x="0" y="0" width="320" height="200" fill="url(#vg)"/>
+                <rect x="120" y="140" width="80" height="8" rx="2" fill="#333"/>
+                <rect x="148" y="90" width="24" height="50" rx="2" fill="#2a2a3e"/>
+                <path d="M80 110 Q80 90 95 85 L115 65 Q130 55 160 55 L200 55 Q230 55 245 65 L265 85 Q280 90 280 110 L280 130 Q280 138 272 138 L88 138 Q80 138 80 130 Z" fill="#2d3561" stroke="#4a5568" stroke-width="1"/>
+                <circle cx="120" cy="138" r="22" fill="#111" stroke="#333" stroke-width="1.5"/>
+                <circle cx="120" cy="138" r="13" fill="#1a1a1a" stroke="#e67e22" stroke-width="1.5"/>
+                <circle cx="240" cy="138" r="22" fill="#111" stroke="#333" stroke-width="1.5"/>
+                <circle cx="240" cy="138" r="13" fill="#1a1a1a" stroke="#e67e22" stroke-width="1.5"/>
+                <rect x="268" y="105" width="14" height="8" rx="2" fill="#e67e22" opacity="0.9"/>
+                <rect x="260" y="155" width="8" height="30" rx="2" fill="#e67e22" opacity="0.6"/>
+                <rect x="272" y="145" width="8" height="40" rx="2" fill="#e67e22" opacity="0.8"/>
+                <rect x="284" y="160" width="8" height="25" rx="2" fill="#e67e22" opacity="0.5"/>
+                <rect x="296" y="150" width="8" height="35" rx="2" fill="#e67e22" opacity="0.7"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- BITÁCORA -->
+      <ng-container *ngIf="seccionActiva === 'bitacora'">
+        <app-bitacora></app-bitacora>
+      </ng-container>
+
+      <!-- REPORTE -->
+      <ng-container *ngIf="seccionActiva === 'reporte'">
+        <app-reporte></app-reporte>
+      </ng-container>
+
+      <!-- PERFIL -->
+      <ng-container *ngIf="seccionActiva === 'perfil'">
+        <app-perfil-usuario
+          [usuario]="usuario"
+          (onGuardado)="onPerfilGuardado($event)"
+        ></app-perfil-usuario>
+      </ng-container>
+
+      <ng-container *ngIf="seccionActiva === 'vehiculos'">
+         <app-mis-vehiculos></app-mis-vehiculos>
+      </ng-container>
+
+      <ng-container *ngIf="seccionActiva === 'taller'">
+         <app-mi-taller></app-mi-taller>
+      </ng-container>
+
+      <ng-container *ngIf="seccionActiva === 'reportar'">
+       <app-reportar-incidente></app-reportar-incidente>
+      </ng-container>
+
+      <ng-container *ngIf="seccionActiva === 'atender'">
+        <app-atender></app-atender>
+       
+      </ng-container>
+
+      <ng-container *ngIf="seccionActiva === 'historial'">
+        <app-historial-tecnico ></app-historial-tecnico>
+      </ng-container>
+
+ 
+    </div>
+  </main>
+</div>

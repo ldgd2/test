@@ -1,0 +1,42 @@
+# Backend — Dependencias Python (PostgreSQL)
+# Generado para Python 3.11 — FastAPI + PostgreSQL
+
+# ── Web Framework ────────────────────────────────────────────────────
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+starlette==0.41.3
+python-multipart==0.0.20
+
+# ── Base de Datos — PostgreSQL ───────────────────────────────────────
+sqlalchemy==2.0.36
+psycopg2-binary==2.9.10
+
+# ── Configuración ────────────────────────────────────────────────────
+pydantic==2.10.4
+pydantic-settings==2.7.0
+pydantic_core==2.27.2
+python-dotenv==1.0.1
+
+# ── Autenticación / Seguridad ────────────────────────────────────────
+passlib[bcrypt]==1.7.4
+bcrypt==4.2.1
+python-jose[cryptography]==3.3.0
+cryptography==44.0.0
+
+# ── HTTP / Async ─────────────────────────────────────────────────────
+httpx==0.28.1
+anyio==4.7.0
+h11==0.14.0
+httptools==0.6.4
+websockets==14.1
+watchfiles==1.0.3
+
+# ── Utilidades ───────────────────────────────────────────────────────
+annotated-types==0.7.0
+typing_extensions==4.12.2
+PyYAML==6.0.2
+click==8.1.8
+colorama==0.4.6
+
+# ── Seeder (datos de prueba) ─────────────────────────────────────────
+faker==33.1.0

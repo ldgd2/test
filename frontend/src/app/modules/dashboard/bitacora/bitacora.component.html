@@ -1,0 +1,162 @@
+<div class="bit-wrap">
+
+  <!-- CABECERA -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Bitácora de sesiones</h2>
+      <p class="page-sub">Registro de accesos y cierres de sesión de todos los usuarios</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-action" (click)="imprimir()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 6 2 18 2 18 9"/>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+          <rect x="6" y="14" width="12" height="8"/>
+        </svg>
+        Imprimir
+      </button>
+      <button class="btn-action btn-dark" (click)="exportarCSV()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Exportar CSV
+      </button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total registros</div>
+      <div class="stat-val">{{ total }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Logins</div>
+      <div class="stat-val">{{ totalLogin }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Logouts</div>
+      <div class="stat-val">{{ totalLogout }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Usuarios únicos</div>
+      <div class="stat-val">{{ usuariosUnicos }}</div>
+    </div>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filters-bar">
+    <input
+      class="filter-input"
+      type="text"
+      placeholder="Buscar por nombre o email..."
+      [(ngModel)]="filtroTexto"
+      (input)="aplicarFiltros()">
+
+    <select class="filter-select" [(ngModel)]="filtroAccion" (change)="aplicarFiltros()">
+      <option value="">Todas las acciones</option>
+      <option value="login">Login</option>
+      <option value="logout">Logout</option>
+    </select>
+
+    <select class="filter-select" [(ngModel)]="filtroRol" (change)="aplicarFiltros()">
+      <option value="">Todos los roles</option>
+      <option value="admin">Admin</option>
+      <option value="cliente">Cliente</option>
+      <option value="tecnico">Técnico</option>
+    </select>
+
+    <input
+      class="filter-input filter-date"
+      type="date"
+      [(ngModel)]="filtroFecha"
+      (change)="aplicarFiltros()">
+
+    <button class="btn-clear" (click)="limpiarFiltros()" *ngIf="filtroTexto || filtroAccion || filtroRol || filtroFecha">
+      Limpiar
+    </button>
+  </div>
+
+  <!-- ERROR -->
+  <p *ngIf="error" class="msg-error">{{ error }}</p>
+
+  <!-- LOADING -->
+  <div *ngIf="cargando" class="loading-row">
+    <div class="spinner"></div>
+    <span>Cargando bitácora...</span>
+  </div>
+
+  <!-- TABLA -->
+  <div class="table-card" *ngIf="!cargando">
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Rol</th>
+            <th>Acción</th>
+            <th>Fecha y hora</th>
+            <th>IP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of filtrados">
+            <td>
+              <div class="user-cell">
+                <div class="avatar-sm">{{ iniciales(r.nombres) }}</div>
+                <div>
+                  <div class="user-name">{{ r.nombres }}</div>
+                  <div class="user-email">{{ r.email }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="badge"
+                [ngClass]="{
+                  'badge-admin':   r.tipo === 'admin',
+                  'badge-cliente': r.tipo === 'cliente',
+                  'badge-tecnico': r.tipo === 'tecnico'
+                }">{{ r.tipo }}</span>
+            </td>
+            <td>
+              <span class="badge"
+                [ngClass]="{
+                  'badge-login':  r.accion === 'login',
+                  'badge-logout': r.accion === 'logout'
+                }">{{ r.accion }}</span>
+            </td>
+            <td class="fecha-cell">{{ formatFecha(r.fecha_hora) }}</td>
+            <td class="ip-cell">{{ r.ip || '—' }}</td>
+          </tr>
+
+          <tr *ngIf="filtrados.length === 0">
+            <td colspan="5" class="empty-row">No hay registros que coincidan con los filtros</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <span>Mostrando {{ filtrados.length }} de {{ total }} registros</span>
+      <button class="btn-refresh" (click)="cargar()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M23 4v6h-6"/><path d="M1 20v-6h6"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+        Actualizar
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ESTILOS DE IMPRESIÓN -->
+<style>
+  @media print {
+    .header-actions, .filters-bar, .btn-refresh, .table-footer { display: none !important; }
+    .bit-wrap { padding: 0; }
+    .table-card { border: 1px solid #ccc; }
+    .page-title { font-size: 16px; }
+  }
+</style>

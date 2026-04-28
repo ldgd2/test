@@ -1,0 +1,79 @@
+<div class="reporte-wrap">
+
+  <div class="rep-header">
+    <div>
+      <div class="rep-label">Exportar datos</div>
+      <h2 class="rep-title">Reporte de bitácora</h2>
+      <p class="rep-sub">Genera un PDF con el historial completo de sesiones del sistema</p>
+    </div>
+    <button class="btn-pdf" (click)="generarPDF()" [disabled]="loading || generando">
+      <span *ngIf="!generando">⬇ Descargar PDF</span>
+      <span *ngIf="generando">Generando...</span>
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div> Cargando datos...
+  </div>
+
+  <!-- Preview -->
+  <div *ngIf="!loading">
+    <div class="preview-card">
+      <div class="preview-header">
+        <span class="preview-icon">📄</span>
+        <div>
+          <div class="preview-title">Reporte_Bitacora_AutoWorks.pdf</div>
+          <div class="preview-sub">Vista previa del contenido</div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-num">{{ total }}</div>
+          <div class="stat-lbl">Total registros</div>
+        </div>
+        <div class="stat-box green">
+          <div class="stat-num">{{ totalLogin }}</div>
+          <div class="stat-lbl">Inicios de sesión</div>
+        </div>
+        <div class="stat-box red">
+          <div class="stat-num">{{ totalLogout }}</div>
+          <div class="stat-lbl">Cierres de sesión</div>
+        </div>
+      </div>
+
+      <div class="preview-contenido">
+        <div class="prev-row header-row">
+          <span>#</span>
+          <span>Usuario</span>
+          <span>Rol</span>
+          <span>Acción</span>
+          <span>Fecha</span>
+        </div>
+        <div
+          class="prev-row"
+          *ngFor="let r of registros.slice(0, 5); let i = index"
+        >
+          <span class="td-num">{{ i + 1 }}</span>
+          <span>{{ r.nombres }}</span>
+          <span>{{ r.tipo }}</span>
+          <span [class]="r.accion">{{ r.accion }}</span>
+          <span class="td-fecha">{{ formatFecha(r.fecha_hora) }}</span>
+        </div>
+        <div class="prev-more" *ngIf="registros.length > 5">
+          + {{ registros.length - 5 }} registros más en el PDF
+        </div>
+        <div class="prev-empty" *ngIf="registros.length === 0">
+          No hay registros en la bitácora
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <span class="info-icon">ℹ</span>
+      El PDF se abrirá en una nueva ventana. Usa <strong>Ctrl+P</strong> o el botón de imprimir para guardarlo como PDF.
+    </div>
+  </div>
+
+</div>

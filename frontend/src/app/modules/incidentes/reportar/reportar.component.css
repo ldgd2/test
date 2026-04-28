@@ -1,0 +1,205 @@
+/* --- CONTENEDOR PRINCIPAL --- */
+.report-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  animation: slideUp 0.6s ease-out; /* Animación de entrada al cargar */
+}
+
+/* --- HEADER --- */
+.report-header h2 { 
+  color: #e63946; 
+  margin-bottom: 5px; 
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.report-header p { 
+  color: #666; 
+  margin-bottom: 25px; 
+  font-size: 0.95rem;
+}
+
+/* --- GRUPOS DE FORMULARIO --- */
+.form-group { margin-bottom: 20px; }
+
+.form-group label { 
+  display: block; 
+  font-weight: 600; 
+  margin-bottom: 8px; 
+  color: #1d3557; 
+  transition: color 0.3s;
+}
+
+/* --- INPUTS Y SELECTS --- */
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #f1f4f8;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: #f9fbff;
+}
+
+.form-input:focus { 
+  border-color: #457b9d; 
+  background-color: #fff;
+  outline: none; 
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(69, 123, 157, 0.15);
+}
+
+/* --- SECCIÓN DE FOTO (CARD) --- */
+.card.bg-light {
+  border: 2px dashed #dee2e6;
+  border-radius: 12px;
+  background-color: #fcfdff !important;
+  transition: all 0.3s ease;
+}
+
+.card.bg-light:hover {
+  border-color: #457b9d;
+  background-color: #f0f7ff !important;
+}
+
+.btn-outline-secondary {
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+/* --- INPUT GROUP (TEXTAREA + MICRO) --- */
+.input-group {
+  display: flex;
+  align-items: stretch;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.input-group textarea {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  flex: 1;
+}
+
+/* --- BOTÓN DE VOZ --- */
+.btn-voice {
+  border: 2px solid #f1f4f8;
+  border-left: none;
+  background: #f9fbff;
+  color: #457b9d;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-voice:hover {
+  background: #f0f4f8;
+  color: #1d3557;
+}
+
+/* Estado Activo (Grabando) */
+.listening-active {
+  background-color: #e63946 !important;
+  color: white !important;
+  border-color: #e63946 !important;
+  animation: pulse-red 1.5s infinite;
+}
+
+.recording-text {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+
+/* --- MAPA --- */
+#map { 
+  z-index: 1; 
+  border: 2px solid #f1f4f8;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+}
+
+#map:hover {
+  border-color: #457b9d;
+}
+
+/* --- BOTÓN DE ENVÍO --- */
+.btn-submit {
+  width: 100%;
+  padding: 16px;
+  background: #e63946;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-submit:hover:not(:disabled) { 
+  background: #c1121f; 
+  transform: scale(1.02);
+  box-shadow: 0 6px 15px rgba(230, 57, 70, 0.3);
+}
+
+.btn-submit:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-submit:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* --- ANIMACIONES Y ERRORES --- */
+.form-input.error { 
+  border-color: #e63946; 
+  animation: shake 0.4s linear; /* Sacudida si hay error */
+}
+
+.error-text { 
+  color: #e63946; 
+  font-size: 0.8rem; 
+  margin-top: 5px; 
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* --- DEFINICIÓN DE ANIMACIONES --- */
+
+@keyframes pulse-red {
+  0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(230, 57, 70, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}

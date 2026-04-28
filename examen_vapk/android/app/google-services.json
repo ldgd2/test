@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "587745427294",
+    "project_id": "proyecto-de-asistencia-2b74b",
+    "storage_bucket": "proyecto-de-asistencia-2b74b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587745427294:android:951559ef51f61e842819cf",
+        "android_client_info": {
+          "package_name": "com.example.examen_vapk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLzHW_P43E2HqfCECUIEYkPuVJ0mcRZgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
