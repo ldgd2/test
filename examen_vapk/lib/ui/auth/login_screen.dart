@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'register_screen.dart';
 import '../../main.dart';
 import '../../core/firebase_service.dart';
+import '../../core/environment.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://185.214.134.23:8000/api/usuarios/login'),
+        Uri.parse('${Environment.baseUrl}/usuarios/login'),
         headers: {
           'Content-Type': 'application/json',
           'Accept':       'application/json',
@@ -51,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
         final fcmToken = await FirebaseService.obtenerToken();
         if (fcmToken != null) {
           await http.post(
-            Uri.parse('http://185.214.134.23:8000/api/usuarios/fcm-token'),
+            Uri.parse('${Environment.baseUrl}/usuarios/fcm-token'),
             headers: {
               'Content-Type':  'application/json',
               'Authorization': 'Bearer $token',

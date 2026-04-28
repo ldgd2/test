@@ -2,7 +2,7 @@
 # ╔══════════════════════════════════════════════════════════════════╗
 # ║   FRONTEND — 03 Crear Servicio systemd                          ║
 # ║   Instala autoworks-frontend como servicio del sistema          ║
-# ║   Ejecuta Angular SSR vía Node.js en puerto 4000                ║
+# ║   Ejecuta Angular SSR vía Node.js en puerto 4200                ║
 # ║   Uso: sudo bash frontend/03_create_service.sh                  ║
 # ╚══════════════════════════════════════════════════════════════════╝
 
@@ -23,7 +23,7 @@ SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 APP_USER="${SUDO_USER:-$(whoami)}"
 APP_GROUP="$(id -gn "$APP_USER" 2>/dev/null || echo "$APP_USER")"
 NODE_BIN="$(which node)"
-FRONTEND_PORT="4000"
+FRONTEND_PORT="4200"
 
 log "Creando servicio systemd: ${SERVICE_NAME}"
 log "Directorio frontend: $FRONTEND_DIR"

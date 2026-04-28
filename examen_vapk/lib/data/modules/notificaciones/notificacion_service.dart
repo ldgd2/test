@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:http/http.dart' as http;
+import '../../../core/environment.dart';
 import 'notificacion_model.dart';
 
 class NotificacionService {
-  final String baseUrl   = "http://185.214.134.23:8000/api";
-  final String wsBaseUrl = "ws://185.214.134.23:8000/api";
+  final String baseUrl   = Environment.baseUrl;
+  final String wsBaseUrl = Environment.wsBaseUrl;
 
   WebSocketChannel? _channel;
   final StreamController<Map<String, dynamic>> _streamController =

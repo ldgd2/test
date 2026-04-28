@@ -40,3 +40,4 @@ colorama==0.4.6
 
 # ── Seeder (datos de prueba) ─────────────────────────────────────────
 faker==33.1.0
+firebase-admin==6.5.0

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../data/modules/pagos/pago_model.dart';
 import '../../data/modules/pagos/pago_service.dart';
+import '../../core/environment.dart';
 
 class PagoScreen extends StatefulWidget {
   final String token;
@@ -499,7 +500,7 @@ class _PagoScreenState extends State<PagoScreen> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  'http://185.214.134.23:8000/${p.comprobanteUrl}',
+                  '${Environment.staticUrl}/${p.comprobanteUrl}',
                   height: 150, fit: BoxFit.cover, width: double.infinity,
                   errorBuilder: (_, __, ___) => const SizedBox(),
                 ),

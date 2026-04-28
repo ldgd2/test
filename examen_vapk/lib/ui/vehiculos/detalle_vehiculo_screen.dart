@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../data/modules/vehiculos/vehicle_model.dart';
 import '../../data/modules/vehiculos/vehicle_service.dart';
+import '../../core/environment.dart';
 import 'register_vehicle_screen.dart';
 
 class DetalleVehiculoScreen extends StatefulWidget {
@@ -169,7 +170,7 @@ class _DetalleVehiculoScreenState extends State<DetalleVehiculoScreen> {
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.network(
-                        'http://185.214.134.23:8000/${v.fotoUrl}',
+                        '${Environment.staticUrl}/${v.fotoUrl}',
                         fit: BoxFit.cover,
                         errorBuilder: (_, __, ___) => _avatarDefault(),
                       ),

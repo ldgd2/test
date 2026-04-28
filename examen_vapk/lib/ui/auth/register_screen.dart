@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../../core/environment.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -26,7 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     try {
       // URL basada en tu Swagger: /api/usuarios/registro
-      final url =  Uri.parse('http://185.214.134.23:8000/api/vehiculos/');
+      final url =  Uri.parse('${Environment.baseUrl}/usuarios/registro');
 
       final response = await http.post(
         url,

@@ -3,10 +3,11 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
+import '../../../core/environment.dart';
 import 'pago_model.dart';
 
 class PagoService {
-  final String baseUrl = "http://185.214.134.23:8000/api";
+  final String baseUrl = Environment.baseUrl;
 
   // ── Obtener pago por asignación ───────────────────────────
   Future<PagoModel?> getPagoPorAsignacion(
