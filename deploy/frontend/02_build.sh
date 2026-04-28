@@ -36,14 +36,14 @@ if [ -d "dist" ]; then
 fi
 
 # ── Build de producción ───────────────────────────────────────────────
-log "Ejecutando: ng build --configuration production"
+log "Ejecutando: npm run build"
 echo ""
 
-# Aumentar memoria Node.js para proyectos grandes
+# Aumentar memoria Node.js para evitar errores de memoria
 export NODE_OPTIONS="--max_old_space_size=4096"
 
 START_TIME=$(date +%s)
-npx ng build --configuration production
+npm run build
 END_TIME=$(date +%s)
 BUILD_TIME=$((END_TIME - START_TIME))
 
