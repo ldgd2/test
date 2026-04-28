@@ -43,9 +43,9 @@ echo ""
 export NODE_OPTIONS="--max_old_space_size=4096"
 
 START_TIME=$(date +%s)
-# Asegurar permisos de ejecución y usar node para evitar bloqueos
-chmod +x ./node_modules/.bin/ng
-node ./node_modules/.bin/ng build --configuration production
+# Asegurar que el binario sea accesible y ejecutar vía Node.js
+chmod +x ./node_modules/@angular/cli/bin/ng.js
+node ./node_modules/@angular/cli/bin/ng.js build --configuration production
 END_TIME=$(date +%s)
 BUILD_TIME=$((END_TIME - START_TIME))
 
