@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.angular/
+.env
+.vscode/
+.editorconfig
+*.log
+package-lock.json
