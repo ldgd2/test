@@ -51,12 +51,24 @@ echo ""
 success "✅ Build completado en ${BUILD_TIME}s"
 
 # ── Verificar artefactos ──────────────────────────────────────────────
-if [ -f "$FRONTEND_DIR/dist/frontend/server/server.mjs" ]; then
-    success "SSR Server: dist/frontend/server/server.mjs"
+log "Verificando artefactos en $FRONTEND_DIR/dist/..."
+
+# Posibles rutas de server.mjs en Angular 17/18/21
+SERVER_PATH_1="$FRONTEND_DIR/dist/frontend/server/server.mjs"
+SERVER_PATH_2="$FRONTEND_DIR/dist/frontend/server/main.server.mjs"
+
+if [ -f "$SERVER_PATH_1" ]; then
+    success "SSR Server detectado: $SERVER_PATH_1"
+elif [ -f "$SERVER_PATH_2" ]; then
+    success "SSR Server detectado: $SERVER_PATH_2"
+    # Crear un enlace simbólico o renombrar si el servicio espera server.mjs
+    ln -sf "$SERVER_PATH_2" "$SERVER_PATH_1"
 elif [ -d "$FRONTEND_DIR/dist/frontend/browser" ]; then
-    success "SPA Browser: dist/frontend/browser/"
+    success "SPA Browser detectado: dist/frontend/browser/"
 else
-    error "No se encontraron artefactos de build en dist/"
+    warn "Contenido de la carpeta dist:"
+    ls -R "$FRONTEND_DIR/dist" || echo "Carpeta dist vacía o no existe"
+    error "No se encontraron artefactos de build esperados en dist/frontend/ (browser o server)"
 fi
 
 echo ""
